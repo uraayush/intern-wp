@@ -3,13 +3,24 @@
             <div class="one_quarter first">
             <h1 class="logoname"><a href="index.html">Chill<span>a</span>id</a></h1>
             <p>Scelerisque facilisis sapien turpis facilisis libero eu viverra purus dui ac leo sed vitae diam morbi sed nibh in eget dolor phasellus rhoncus odio morbi elit nunc id elit donec elementum [<a href="#">&hellip;</a>]</p>
+            <?php
+            $socialDatas = get_theme_mod('intern_social');
+            // internDebug($socialDatas);
+            ?>
             <ul class="faico clear">
-                <li><a class="faicon-facebook" href="#"><i class="fab fa-facebook"></i></a></li>
-                <li><a class="faicon-google-plus" href="#"><i class="fab fa-google-plus-g"></i></a></li>
-                <li><a class="faicon-linkedin" href="#"><i class="fab fa-linkedin"></i></a></li>
+                <li><a class="faicon-facebook" href="<?php echo $socialDatas['facebook'];?>"><i class="fab fa-facebook"></i></a></li>
+                <?php
+                foreach($socialDatas as $socialKey=>$socialData):?>
+                    <li>
+                        <a class="faicon-<?php echo $socialKey;?>" href="<?php echo $socialData;?>"><i class="fab fa-<?php echo $socialKey;?>"></i></a>
+                    </li>
+                    <?php
+                endforeach;?>
+                <!-- <li><a class="faicon-linkedin" href="#"><i class="fab fa-linkedin"></i></a></li>
                 <li><a class="faicon-twitter" href="#"><i class="fab fa-twitter"></i></a></li>
-                <li><a class="faicon-vk" href="#"><i class="fab fa-vk"></i></a></li>
+                <li><a class="faicon-vk" href="#"><i class="fab fa-vk"></i></a></li> -->
             </ul>
+
             </div>
             <div class="one_quarter">
             <h6 class="heading">Volutpat metus nullam</h6>
