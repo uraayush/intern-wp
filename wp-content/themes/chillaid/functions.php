@@ -124,3 +124,17 @@ function interns_post_type_init()
 }
 
 add_action('init', 'interns_post_type_init');
+
+/**
+ * Add customizer
+ */
+
+require get_template_directory() . '/classes/class-intern-customize.php';
+new Intern_Customize();
+
+function internDebug($content)
+{
+    echo"<pre>";
+    print_r($content);
+    exit;
+}
