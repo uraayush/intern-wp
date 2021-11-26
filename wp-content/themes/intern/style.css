@@ -1,7 +1,7 @@
 @charset "UTF-8";
 
 /*
-Theme Name: Chill-Aid
+Theme Name: Intern
 Theme URI: https://outside.tech
 Author: Outside
 Author URI: https://outside.tech/
@@ -11,7 +11,7 @@ Tested up to: 5.8
 Requires PHP: 5.6
 Version: 1
 License: GNU General Public License v2 or later
-Text Domain: chillaid
+Text Domain: intern
 */
 
 @import url("./layout/styles/layout.css");
