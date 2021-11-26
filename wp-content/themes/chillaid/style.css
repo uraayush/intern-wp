@@ -1,0 +1,17 @@
+@charset "UTF-8";
+
+/*
+Theme Name: Chill-Aid
+Theme URI: https://outside.tech
+Author: Outside
+Author URI: https://outside.tech/
+Description: Custom Built theme for Interns
+Requires at least: 5.3
+Tested up to: 5.8
+Requires PHP: 5.6
+Version: 1
+License: GNU General Public License v2 or later
+Text Domain: chillaid
+*/
+
+@import url("./layout/styles/layout.css");
