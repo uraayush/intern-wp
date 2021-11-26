@@ -132,6 +132,32 @@ add_action('init', 'interns_post_type_init');
 require get_template_directory() . '/classes/class-intern-customize.php';
 new Intern_Customize();
 
+
+/**
+ * Create ACF BLocks
+ */
+add_action('acf/init', 'my_acf_init_block_types');
+function my_acf_init_block_types() {
+
+    // Check function exists.
+    if( function_exists('acf_register_block_type') ) {
+
+        // register a Hero/leadspace block.
+        acf_register_block_type(array(
+            'name'              => 'hero',
+            'title'             => __('Hero'),
+            'description'       => __('A custom testimonial block.'),
+            'render_template'   => 'template-parts/blocks/hero.php',
+            'category'          => 'formatting',
+            'icon'              => 'admin-comments',
+            'keywords'          => array( 'hero', 'leadspace' ),
+        ));
+    }
+}
+
+/**
+ * debug function
+ */
 function internDebug($content)
 {
     echo"<pre>";
