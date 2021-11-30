@@ -30,6 +30,7 @@ if (! function_exists('intern_theme_setup')) {
 				'footer'  => __( 'Secondary menu', 'interns' ),
 			)
 		);
+        add_image_size( 'custom-size', 220, 180 ); // 220 pixels wide by 180 pixels tall, soft proportional crop mode
     }
 }
 add_action( 'after_setup_theme', 'intern_theme_setup' );
@@ -95,6 +96,8 @@ function interns_scripts() {
     );
     wp_enqueue_script('intern-easypiechart.min', get_template_directory_uri() . '/layout/scripts/jquery.easypiechart.min.js', ['jquery'], null, true);
 
+    wp_localize_script( 'intern-easypiechart.min', 'myAjax', array( 'ajaxurl' => admin_url( 'admin-ajax.php' )));        
+
 }
 add_action( 'wp_enqueue_scripts', 'interns_scripts' );
 
@@ -112,7 +115,7 @@ function interns_post_type_init()
             ),
             'public' => true,
             'publicly_queryable' => true,
-            'has_archive' => false,
+            'has_archive' => true,
             'show_ui' => true,
             'show_in_rest' => true,
             // 'hierarchical' => true,
@@ -124,6 +127,40 @@ function interns_post_type_init()
 }
 
 add_action('init', 'interns_post_type_init');
+
+add_action( 'init', 'create_subjects_hierarchical_taxonomy', 0 );
+ 
+//create a custom taxonomy name it subjects for your posts
+ 
+function create_subjects_hierarchical_taxonomy() {
+ 
+ 
+  $labels = array(
+    'name' => _x( 'Subjects', 'taxonomy general name' ),
+    'singular_name' => _x( 'Subject', 'taxonomy singular name' ),
+    'search_items' =>  __( 'Search Subjects' ),
+    'all_items' => __( 'All Subjects' ),
+    'parent_item' => __( 'Parent Subject' ),
+    'parent_item_colon' => __( 'Parent Subject:' ),
+    'edit_item' => __( 'Edit Subject' ), 
+    'update_item' => __( 'Update Subject' ),
+    'add_new_item' => __( 'Add New Subject' ),
+    'new_item_name' => __( 'New Subject Name' ),
+    'menu_name' => __( 'Subjects' ),
+  );    
+ 
+    // Now register the taxonomy
+  register_taxonomy('subjects',array('news'), array(
+    'hierarchical' => true,
+    'labels' => $labels,
+    'show_ui' => true,
+    'show_in_rest' => true,
+    'show_admin_column' => true,
+    'query_var' => true,
+    'rewrite' => array( 'slug' => 'type' ),
+  ));
+ 
+}
 
 /**
  * Add customizer
@@ -164,3 +201,46 @@ function internDebug($content)
     print_r($content);
     exit;
 }
+
+add_action("wp_ajax_my_user_vote", "my_user_vote");
+add_action("wp_ajax_nopriv_my_user_vote", "my_must_login");
+
+function my_user_vote()
+{
+    $postId = $_POST['post_id'];
+    $paged = $_POST['paged'] ?? 1;
+
+    $args = array(
+        'post_type' => 'news',
+        'posts_per_page'=>1,
+        'paged' => $paged,
+        'tax_query' => array(
+            array(
+                'taxonomy' => 'subjects',
+                'field'    => 'slug',
+                'terms'    => 'politics',
+            ),
+        ),
+    );
+    $query = new WP_Query( $args );
+    $returnData = 'vote submitted on post '.$postId;
+    $reponseType = 'error';
+    while ( $query->have_posts()):
+        $query->the_post();
+        $returnData .= 'title = '. get_the_title().'<br>';
+        $reponseType = 'success';
+    endwhile;
+
+    
+    wp_send_json(array(
+        'data' => $returnData,
+        'response' => $reponseType
+    ));
+    die;
+}
+
+function my_must_login()
+{
+    echo 'must login';
+}
+

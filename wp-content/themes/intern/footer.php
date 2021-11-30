@@ -84,6 +84,35 @@
     <!-- JAVASCRIPTS -->
 
     <?php wp_footer();?>
+    <script>
+        jQuery(document).ready( function() {
+            console.log('i am here');
+        jQuery(".user_vote").click( function(e) {
+            e.preventDefault(); 
+            post_id = jQuery(this).attr("data-post_id");
+            // nonce = jQuery(this).attr("data-nonce");
+            pageNum = jQuery(this).attr('page-num');
+
+            jQuery.ajax({
+                type : "post",
+                dataType : "json",
+                url : myAjax.ajaxurl,
+                data : {action: "my_user_vote", post_id : post_id, paged : pageNum },
+                success: function(data) {
+                    console.log(data);
+                    if(data.response == "success") {
+                        console.log('sucess bhayo');
+                        jQuery('.user_vote').attr('page-num',parseInt(pageNum)+parseInt(1))
+                    }
+                    else {
+                        // alert("Your vote could not be added")
+                    }
+                }
+            })
+        })
+
+        })
+    </script>
 
     <!-- <script src="layout/scripts/jquery.min.js"></script>
     <script src="layout/scripts/jquery.backtotop.js"></script>

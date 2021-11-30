@@ -1,5 +1,6 @@
 <?php
 $content = get_field('hero');
+internDebug($heroData);
 $heading = $content['heading'] ?? false;
 $subheading = $content['subheading'] ?? false;
 $cta = (is_array($content['cta']) && isset($content['cta']['url'])) ? $content['cta'] : false;
